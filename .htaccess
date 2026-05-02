@@ -6,56 +6,26 @@
 # Desabilitar listagem de diretórios
 Options -Indexes
 
-# Proteger arquivos sensíveis
-<FilesMatch "\.(php|log|tmp|zip|sql|ini|env|json|lock)$">
-    Order Allow,Deny
-    Deny from all
-</FilesMatch>
-
-# Permitir apenas index.php
-<Files "index.php">
-    Order Allow,Deny
-    Allow from all
-</Files>
-
-# Bloquear acesso a pastas sensíveis
-RedirectMatch 403 ^/orcamento/(includes|logs|templates|vendor)/
-
-# Permitir assets estáticos
-<FilesMatch "\.(css|js|png|jpg|jpeg|gif|svg|woff|woff2|ttf)$">
-    Order Allow,Deny
-    Allow from all
-</FilesMatch>
-
-# Bloquear bots maliciosos
+# Bloquear acesso direto a pastas sensíveis
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    
-    # Bloquear user-agents maliciosos conhecidos
-    RewriteCond %{HTTP_USER_AGENT} (bot|crawler|spider|scraper|scanner|sqlmap|nikto|masscan|nmap|dirbuster|gobuster|wpscan|acunetix|nessus|burpsuite) [NC]
-    RewriteCond %{HTTP_USER_AGENT} !Googlebot [NC]
-    RewriteCond %{HTTP_USER_AGENT} !Bingbot [NC]
-    RewriteCond %{HTTP_USER_AGENT} !Cloudflare [NC]
+
+    # Bloquear acesso a includes, logs, templates, vendor
+    RewriteRule ^includes/ - [F,L]
+    RewriteRule ^logs/ - [F,L]
+    RewriteRule ^templates/ - [F,L]
+    RewriteRule ^vendor/ - [F,L]
+
+    # Bloquear bots maliciosos
+    RewriteCond %{HTTP_USER_AGENT} (sqlmap|nikto|masscan|nmap|dirbuster|gobuster|wpscan|acunetix|nessus|burpsuite) [NC]
     RewriteRule .* - [F,L]
-    
-    # Bloquear requisições sem User-Agent
-    RewriteCond %{HTTP_USER_AGENT} ^$ 
-    RewriteRule .* - [F,L]
-    
+
     # Bloquear tentativas de path traversal
     RewriteCond %{QUERY_STRING} (\.\./|\.\.\\) [NC]
     RewriteRule .* - [F,L]
-    
-    # Bloquear tentativas de SQL injection na URL
-    RewriteCond %{QUERY_STRING} (union|select|insert|update|delete|drop|alter|create|exec|execute|xp_|sp_|0x) [NC]
-    RewriteRule .* - [F,L]
-    
-    # Bloquear tentativas de XSS na URL
-    RewriteCond %{QUERY_STRING} (<script|javascript:|vbscript:|onload=|onerror=) [NC]
-    RewriteRule .* - [F,L]
 </IfModule>
 
-# Headers de segurança (fallback se PHP não enviar)
+# Headers de segurança
 <IfModule mod_headers.c>
     Header set X-Content-Type-Options "nosniff"
     Header set X-Frame-Options "DENY"
