@@ -1,0 +1,12 @@
+{
+    "name": "ledfactory/orcamentos",
+    "description": "Sistema de Orçamentos LED Factory",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "dompdf/dompdf": "^2.0"
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}

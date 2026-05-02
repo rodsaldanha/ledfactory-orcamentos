@@ -1,0 +1,17 @@
+# Logs e arquivos temporários
+logs/*.log
+logs/*.tmp
+logs/*.zip
+logs/*.pdf
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+*.swp
+
+# IDE
+.idea/
+.vscode/
+
+# NÃO ignorar vendor - necessário porque não tem terminal no servidor
+# vendor/
