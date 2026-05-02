@@ -1,2 +1,39 @@
-Order Deny,Allow
-Deny from all
+# =============================================
+# LED FACTORY - ORÇAMENTOS
+# .htaccess de Segurança
+# =============================================
+
+# Desabilitar listagem de diretórios
+Options -Indexes
+
+# Bloquear acesso direto a pastas sensíveis
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Bloquear acesso a includes, logs, templates, vendor
+    RewriteRule ^includes/ - [F,L]
+    RewriteRule ^logs/ - [F,L]
+    RewriteRule ^templates/ - [F,L]
+    RewriteRule ^vendor/ - [F,L]
+
+    # Bloquear bots maliciosos
+    RewriteCond %{HTTP_USER_AGENT} (sqlmap|nikto|masscan|nmap|dirbuster|gobuster|wpscan|acunetix|nessus|burpsuite) [NC]
+    RewriteRule .* - [F,L]
+
+    # Bloquear tentativas de path traversal
+    RewriteCond %{QUERY_STRING} (\.\./|\.\.\\) [NC]
+    RewriteRule .* - [F,L]
+</IfModule>
+
+# Headers de segurança
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "DENY"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Compressão
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css application/javascript
+</IfModule>
