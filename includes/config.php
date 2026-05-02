@@ -8,9 +8,9 @@
 // BANCO DE DADOS
 // =============================================
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'ledfactory_orcamentos');  // ALTERAR para o nome real do banco
-define('DB_USER', 'ledfactory_user');        // ALTERAR para o usuário real
-define('DB_PASS', 'SENHA_DO_BANCO');         // ALTERAR para a senha real
+define('DB_NAME', 'ledfactorycom_budget');  // ALTERAR para o nome real do banco
+define('DB_USER', 'ledfactorycom_orca');        // ALTERAR para o usuário real
+define('DB_PASS', '+&+sk~BGtrCs');         // ALTERAR para a senha real
 define('DB_CHARSET', 'utf8mb4');
 
 // =============================================
